@@ -46,6 +46,7 @@ MMRMMRMRRM
 
 # Getting started
 
+- Go 1.16.5 has been used for development of this application
 - The input file is contained in the input folder. This input file is needed to run the program: `rovers.txt`
 - Update this file if you want to add more test examples
 - To run the program `go run .` or `go build .` followed by `./v1`
@@ -54,9 +55,13 @@ MMRMMRMRRM
 
 - If any input directions are not "L", "M" or "R", then that direction is just ignored for a given rover
 - Rovers can start and finish in the same location
-- The planet grid size and the rover coordinates will fit into the default 32 bits or 64 bits dependent on the platform. Specific int base has not been considered as part of this implementation
+- The planet grid size coordinates and the rover coordinates will fit into the default 32 bits or 64 bits dependent on the platform. Specific int base has not been considered as part of this implementation
 - The input structure will always have the grid size as the first row, then alternate rows for the starting position of the rover followed by the commands for that rover
+- All commands for rover moves provided are uppercase
+- All starting positions for rovers are uppercase
 
 # Future considerations
 
-- The input file could be another process or a database
+- The input file could be another process or a database, where connection detials would become part of .env file
+- Each rover could have a unique id assigned as part of input or function to generate one, so they can be retrieved later
+- The maps type that store the orientation details could be changed to actual functions for more complex rotations

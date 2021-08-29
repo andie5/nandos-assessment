@@ -17,18 +17,18 @@ func TestRoverStatus_rotateLeft(t *testing.T) {
 		want   RoverStatus
 	}{
 		{
-			name:   "Default rover state with no direction if original rover is empty",
-			fields: fields{},
-			want:   RoverStatus{X: int(0), Y: int(0)},
-		},
-		{
-			name: "Updates rover with the direction updated 90 degrees anticlockwise",
+			name: "Updates rover status with the direction updated 90 degrees anticlockwise",
 			fields: fields{
 				X:         int(2),
 				Y:         int(3),
 				Direction: "N",
 			},
 			want: RoverStatus{X: int(2), Y: int(3), Direction: "W"},
+		},
+		{
+			name:   "Default rover state is given with no direction if original rover object is empty",
+			fields: fields{},
+			want:   RoverStatus{X: int(0), Y: int(0)},
 		},
 	}
 	for _, tt := range tests {
@@ -60,11 +60,6 @@ func TestRoverStatus_rotateRight(t *testing.T) {
 		want   RoverStatus
 	}{
 		{
-			name:   "Default rover state with no direction if original rover is empty",
-			fields: fields{},
-			want:   RoverStatus{X: int(0), Y: int(0)},
-		},
-		{
 			name: "Updates rover with the direction updated 90 degrees clockwise",
 			fields: fields{
 				X:         int(2),
@@ -72,6 +67,11 @@ func TestRoverStatus_rotateRight(t *testing.T) {
 				Direction: "E",
 			},
 			want: RoverStatus{X: int(2), Y: int(3), Direction: "S"},
+		},
+		{
+			name:   "Default rover state is given with no direction if original rover object is empty",
+			fields: fields{},
+			want:   RoverStatus{X: int(0), Y: int(0)},
 		},
 	}
 	for _, tt := range tests {
@@ -103,11 +103,6 @@ func TestRoverStatus_moveRover(t *testing.T) {
 		want   RoverStatus
 	}{
 		{
-			name:   "Default rover state with no direction if original rover is empty",
-			fields: fields{},
-			want:   RoverStatus{X: int(0), Y: int(0)},
-		},
-		{
 			name: "Updates rover with one move west, in the x direction i.e -1 to current position",
 			fields: fields{
 				X:         int(1),
@@ -124,6 +119,11 @@ func TestRoverStatus_moveRover(t *testing.T) {
 				Direction: "N",
 			},
 			want: RoverStatus{X: int(1), Y: int(4), Direction: "N"},
+		},
+		{
+			name:   "Default rover state is given with no direction if original rover object is empty",
+			fields: fields{},
+			want:   RoverStatus{X: int(0), Y: int(0)},
 		},
 	}
 	for _, tt := range tests {

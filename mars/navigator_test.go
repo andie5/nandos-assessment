@@ -76,7 +76,7 @@ func Test_setStartingPosition(t *testing.T) {
 	}
 }
 
-func TestRoverStatus_processCommands(t *testing.T) {
+func TestRoverStatus_runCommands(t *testing.T) {
 	type fields struct {
 		X         int
 		Y         int
@@ -95,7 +95,7 @@ func TestRoverStatus_processCommands(t *testing.T) {
 		want   RoverStatus
 	}{
 		{
-			name: "Rover status is updated with the valid moves",
+			name: "Rover status is updated with the commands that result in valid move",
 			fields: fields{
 				X:         int(2),
 				Y:         int(2),
@@ -116,7 +116,7 @@ func TestRoverStatus_processCommands(t *testing.T) {
 			},
 		},
 		{
-			name: "Rover status is returned as is if there are no commands to process",
+			name: "Rover status is returned if there are no commands to process",
 			fields: fields{
 				X:         int(2),
 				Y:         int(2),
@@ -137,7 +137,7 @@ func TestRoverStatus_processCommands(t *testing.T) {
 			},
 		},
 		{
-			name: "If invalid move is in list of commands rover status is returned with this",
+			name: "If invalid command results in a invalid move then the rover status is returned immediately",
 			fields: fields{
 				X:         int(2),
 				Y:         int(2),
@@ -157,6 +157,27 @@ func TestRoverStatus_processCommands(t *testing.T) {
 				Direction: "N",
 			},
 		},
+		{
+			name: "Only valid rover commands are processed, invalid commands are ignored",
+			fields: fields{
+				X:         int(2),
+				Y:         int(2),
+				Direction: "N",
+			},
+			args: args{
+				commands: "LLKAM",
+				rovers:   map[int]RoverStatus{},
+				i:        int(4),
+				grid: PlanetAxis{
+					X: int(6), Y: int(6),
+				},
+			},
+			want: RoverStatus{
+				X:         int(2),
+				Y:         int(1),
+				Direction: "S",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -165,7 +186,7 @@ func TestRoverStatus_processCommands(t *testing.T) {
 				Y:         tt.fields.Y,
 				Direction: tt.fields.Direction,
 			}
-			rover.processCommands(tt.args.commands, tt.args.rovers, tt.args.i, tt.args.grid)
+			rover.runCommands(tt.args.commands, tt.args.rovers, tt.args.i, tt.args.grid)
 			// Check rover status object after update
 			if !reflect.DeepEqual(rover, tt.want) {
 				t.Errorf("rotateLeft() = %v, want %v", rover, tt.want)
@@ -185,7 +206,7 @@ func TestProcessRovers(t *testing.T) {
 		want map[int]RoverStatus
 	}{
 		{
-			name: "Returns list of rover and their final positions",
+			name: "Returns list of rovers and their final positions",
 			args: args{
 				dataInput: []string{
 					"5 5",

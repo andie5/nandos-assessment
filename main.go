@@ -25,13 +25,11 @@ func main() {
 		log.Fatalf("Error processing initial planet axis input: %v error: %v", fileOutput, err)
 	}
 
-	//temp initialise rover object
-	rovers := map[int]mars.RoverStatus{}
+	// Process rovers
+	rovers := mars.ProcessRovers(fileOutput, planetGrid)
+
+	// Print rover positions
 	printRoverPositions(rovers)
-
-	log.Println("filename: ", fileOutput)
-	log.Println("planetGrid: ", planetGrid)
-
 }
 
 // printRoverPositions prints the rover coordinates and direction

@@ -173,3 +173,124 @@ func TestRoverStatus_processCommands(t *testing.T) {
 		})
 	}
 }
+
+func TestProcessRovers(t *testing.T) {
+	type args struct {
+		dataInput []string
+		grid      PlanetAxis
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[int]RoverStatus
+	}{
+		{
+			name: "Returns list of rover and their final positions",
+			args: args{
+				dataInput: []string{
+					"5 5",
+					"1 2 N",
+					"LMLMLMLMM",
+					"3 3 E",
+					"MMRMMRMRRM",
+				},
+				grid: PlanetAxis{
+					X: int(5), Y: int(5),
+				},
+			},
+			want: map[int]RoverStatus{
+				1: {
+					X:         int(1),
+					Y:         int(3),
+					Direction: "N",
+				},
+				3: {
+					X:         int(5),
+					Y:         int(1),
+					Direction: "E",
+				},
+			},
+		},
+		{
+			name: "Returns empty rovers if no data input is provided",
+			args: args{
+				dataInput: []string{},
+				grid: PlanetAxis{
+					X: int(5), Y: int(5),
+				},
+			},
+			want: map[int]RoverStatus{},
+		},
+		{
+			name: "Returns empty list of rovers if planet grid axis is not initialised",
+			args: args{
+				dataInput: []string{
+					"5 5",
+					"1 2 N",
+					"LMLMLMLMM",
+					"3 3 E",
+					"MMRMMRMRRM",
+				},
+				grid: PlanetAxis{},
+			},
+			want: map[int]RoverStatus{},
+		},
+		{
+			name: "Returns empty rover status for any rovers where the starting position is invalid",
+			args: args{
+				dataInput: []string{
+					"5 5",
+					"1 2",
+					"LMLMLMLMM",
+					"3 3 E",
+					"MMRMMRMRRM",
+				},
+				grid: PlanetAxis{
+					X: int(5), Y: int(5),
+				},
+			},
+			want: map[int]RoverStatus{
+				1: {},
+				3: {
+					X:         int(5),
+					Y:         int(1),
+					Direction: "E",
+				},
+			},
+		},
+		{
+			name: "Returns list of rovers and their final positions. Rovers can start and end in the same position",
+			args: args{
+				dataInput: []string{
+					"5 5",
+					"1 2 N",
+					"LMLMLMLMM",
+					"1 2 N",
+					"MLLLL",
+				},
+				grid: PlanetAxis{
+					X: int(5), Y: int(5),
+				},
+			},
+			want: map[int]RoverStatus{
+				1: {
+					X:         int(1),
+					Y:         int(3),
+					Direction: "N",
+				},
+				3: {
+					X:         int(1),
+					Y:         int(3),
+					Direction: "N",
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ProcessRovers(tt.args.dataInput, tt.args.grid); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ProcessRovers() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

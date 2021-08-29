@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 )
 
 // setStartingPosition creates a rover status object withe starting coorindates and orientation direction and assigns it the master rover struct
@@ -53,4 +54,36 @@ func (rover *RoverStatus) processCommands(commands string, rovers map[int]RoverS
 			break // Don't process any more moves for this rover
 		}
 	}
+}
+
+// ProcessRovers loops through the data input and updates the rover postion based on a starting position and list of commands
+func ProcessRovers(dataInput []string, grid PlanetAxis) map[int]RoverStatus {
+
+	// Initialise map of rovers
+	rovers := map[int]RoverStatus{}
+	// If planet axis coordinates have not been set or are both zero, return false
+	if grid.X == 0 && grid.Y == 0 {
+		return rovers
+	}
+
+	for i := 1; i < len(dataInput); i++ {
+		row := dataInput[i]
+		rowContents := strings.Split(row, " ")
+		// Every other row of the data is the rover directions
+		if i%int(2) == 0 {
+			// Retrieve rover and process rover commands, one by one
+			rover := rovers[i-1]
+			rover.processCommands(row, rovers, i, grid)
+		} else {
+			var err error
+			rovers[i], err = setStartingPosition(rowContents)
+			// Check if starting position is in the grid, if not, skip to next rover
+			if err != nil {
+				log.Printf("Cannot set starting position for rover. Conversion error: %v\n", err)
+				i += 1 // Skip the commands for the rover
+				continue
+			}
+		}
+	}
+	return rovers
 }

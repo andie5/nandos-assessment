@@ -42,6 +42,10 @@ func (rover *RoverStatus) moveRover() {
 
 // validateMove checks that the rover's latest move position is within the grid axis coordinates and returns true if it is and false otherwise
 func (rover *RoverStatus) validateMove(grid PlanetAxis) bool {
+	// If planet axis coordinates have not been set or are both zero, return false
+	if grid.X == 0 && grid.Y == 0 {
+		return false
+	}
 	if (rover.X <= grid.X && rover.X >= 0) && (rover.Y <= grid.Y && rover.Y >= 0) {
 		return true
 	}

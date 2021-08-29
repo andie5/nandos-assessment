@@ -13,11 +13,18 @@ const (
 func main() {
 
 	// Read text input file
-	file, err := mars.ReadFile(FILENAME)
+	fileOutput, err := mars.ReadFile(FILENAME)
 	if err != nil {
 		log.Fatalf("file did not process %v %v\n", FILENAME, err)
 	}
 
-	log.Println("filename: ", file)
+	// Set planet grid axis
+	planetGrid, err := mars.GetAxis(fileOutput)
+	if err != nil {
+		log.Fatalf("Error processing initial planet axis input: %v error: %v", fileOutput, err)
+	}
+
+	log.Println("filename: ", fileOutput)
+	log.Println("planetGrid: ", planetGrid)
 
 }

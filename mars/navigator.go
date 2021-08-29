@@ -21,7 +21,6 @@ func setStartingPosition(rowContents []string) (RoverStatus, error) {
 	if err != nil {
 		return RoverStatus{}, err
 	}
-
 	// Create rover status object
 	return RoverStatus{
 		X:         xValue,
@@ -63,7 +62,6 @@ func ProcessRovers(dataInput []string, grid PlanetAxis) map[int]RoverStatus {
 	if grid.X == 0 && grid.Y == 0 {
 		return rovers
 	}
-
 	for i := 1; i < len(dataInput); i++ {
 		row := dataInput[i]
 		rowContents := strings.Split(row, " ")

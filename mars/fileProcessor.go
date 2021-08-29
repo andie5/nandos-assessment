@@ -2,7 +2,6 @@ package mars
 
 import (
 	"bufio"
-	"log"
 	"os"
 )
 
@@ -12,7 +11,6 @@ func ReadFile(filename string) ([]string, error) {
 	// Open file
 	file, err := os.Open(filename)
 	if err != nil {
-		log.Printf("failed to open file: %v error: %v\n", filename, err)
 		return nil, err
 	}
 

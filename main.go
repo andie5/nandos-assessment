@@ -6,9 +6,8 @@ import (
 	"nandos/marsrover/v1/mars"
 )
 
-const (
-	FILENAME = "./input/rovers.txt"
-)
+// FILENAME for data processing
+const FILENAME = "./input/rovers.txt"
 
 // Program starts here
 func main() {
@@ -16,7 +15,7 @@ func main() {
 	// Read text input file
 	fileOutput, err := mars.ReadFile(FILENAME)
 	if err != nil {
-		log.Fatalf("file did not process %v %v\n", FILENAME, err)
+		log.Fatalf("Failed to open file %v\n", err)
 	}
 
 	// Set planet grid axis

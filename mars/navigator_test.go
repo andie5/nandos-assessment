@@ -288,6 +288,8 @@ func TestProcessRovers(t *testing.T) {
 					"LMLMLMLMM",
 					"1 2 N",
 					"MLLLL",
+					"1 4 S",
+					"MMML",
 				},
 				grid: PlanetAxis{
 					X: int(5), Y: int(5),
@@ -303,6 +305,11 @@ func TestProcessRovers(t *testing.T) {
 					X:         int(1),
 					Y:         int(3),
 					Direction: "N",
+				},
+				5: {
+					X:         int(1),
+					Y:         int(1),
+					Direction: "E",
 				},
 			},
 		},
